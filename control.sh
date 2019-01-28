@@ -23,7 +23,7 @@ PHP_LIB="/Users/$USER/EasyPhpDev/phplib"
 TEST_DOMAIN="test.$RESOLVER_TLD"
 
 RESOLVER_ORDER=$[ ( $RANDOM % 100 )  + 100 ]
-RESOLVER_ROOT="/etc/resolver"
+RESOLVER_ROOT="/private/etc/resolver"
 TMP_RESOLVER="/tmp/resolver_$RESOLVER_TLD"
 RESOLVER_DEST="$RESOLVER_ROOT/$RESOLVER_TLD"
 
@@ -57,9 +57,14 @@ enable () {
   echo "- Enabing PHP"
   echo "(If prompted, please enter your sudo password so we can install)"
   echo "<IfModule !php5_module>" | sudo tee $LOAD_PHP_CFG > /dev/null 2>&1
-  echo "LoadModule php5_module     libexec/apache2/libphp5.so" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
-  echo "php_value include_path \".:$PHP_LIB\"" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
-  echo "php_flag short_open_tag on" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
+  echo "  LoadModule php5_module /usr/local/php5/libphp5.so" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
+  echo "  php_value include_path \".:$PHP_LIB\"" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
+  echo "  php_flag short_open_tag on" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
+  echo "  AddType application/x-httpd-php .php" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
+  echo "  AddType application/x-httpd-php-source .phps" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
+  echo "  <IfModule dir_module>" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
+  echo "    DirectoryIndex index.html index.php" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
+  echo "  </IfModule>" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
   echo "</IfModule>" | sudo tee -a $LOAD_PHP_CFG > /dev/null 2>&1
 
   echo "- Enabing mod_rewrite"

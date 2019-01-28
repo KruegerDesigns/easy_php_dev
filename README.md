@@ -9,6 +9,7 @@ Requirements
 - OSX (Tested on Mojave 10.14.2)
 - Perl (should already be installed on macOS)
 - Bash (definitely already installed on macOS)
+- PHP installed from https://php-osx.liip.ch/ (pick a version)
 
 Install
 -------
