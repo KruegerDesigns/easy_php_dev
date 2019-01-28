@@ -6,18 +6,18 @@ Quickly setup a dynamic multi-site PHP/Apache development environment on OSX.
 Requirements
 ------------
 
-- OSX (Tested on Snow Leopard 10.6, Lion 10.7, Mountain Lion 10.8 and Mavericks 10.9)
-- Perl (should already be installed on OSX)
-- Bash (definitely already installed on OSX)
+- OSX (Tested on Mojave 10.14.2)
+- Perl (should already be installed on macOS)
+- Bash (definitely already installed on macOS)
 
 Install
 -------
 
 One-liner:
 
-`$ bash < <(curl -s https://raw.githubusercontent.com/ctcherry/easy_php_dev/master/install.sh)`
+`$ bash < <(curl -s https://raw.githubusercontent.com/kruegerdesigns/easy_php_dev/master/install.sh)`
 
-This script will download the latest code, install it into ~/.easy_php_dev and then run the `enable` command described in the Usage section below. Feel free to view the [install.sh](https://github.com/ctcherry/easy_php_dev/blob/master/install.sh) and [download.sh](https://github.com/ctcherry/easy_php_dev/blob/master/download.sh) scripts first to make sure they are safe.
+This script will download the latest code, install it into ~/.easy_php_dev and then run the `enable` command described in the Usage section below. Feel free to view the [install.sh](https://github.com/kruegerdesigns/easy_php_dev/blob/master/install.sh) and [download.sh](https://github.com/kruegerdesigns/easy_php_dev/blob/master/download.sh) scripts first to make sure they are safe.
 
 Usage
 -----

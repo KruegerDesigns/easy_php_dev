@@ -1,11 +1,11 @@
 #!/bin/bash
 
 TMP_DL="/tmp/easy_php_dev.tar.gz"
-DL_URL="https://github.com/ctcherry/easy_php_dev/tarball/master" 
+DL_URL="https://github.com/kruegerdesigns/easy_php_dev/tarball/master"
 
 curl -o $TMP_DL -L $DL_URL > /dev/null 2>&1
 
-TAR_DIR_NAME=`tar -tf $TMP_DL | head -n 1 | sed "s,\(ctcherry[^/]*\).*,\1,"`
+TAR_DIR_NAME=`tar -tf $TMP_DL | head -n 1 | sed "s,\(kruegerdesigns[^/]*\).*,\1,"`
 
 if [ "$TAR_DIR_NAME" == "" ]; then
   echo "There was a problem with the download"

@@ -5,17 +5,17 @@ EASY_PHP_DEV_CFG="/Users/$USER/.easy_php_dev_rc"
 
 RESOLVER_TLD="loc"
 
-USER_AP_FORCE_CFG="/etc/apache2/other/${USER}_zforce.conf"
-USER_AP_CFG="/etc/apache2/other/${USER}_hosts.conf"
+USER_AP_FORCE_CFG="/private/etc/apache2/other/${USER}_zforce.conf"
+USER_AP_CFG="/private/etc/apache2/other/${USER}_hosts.conf"
 USER_LAGENT_ROOT="/Users/$USER/Library/LaunchAgents"
-LOAD_PHP_CFG="/etc/apache2/other/load_php.conf"
-LOAD_REWRITE_CFG="/etc/apache2/other/load_rewrite.conf"
-LOAD_VHOST_ALIAS_CFG="/etc/apache2/other/load_vhost_alias.conf"
+LOAD_PHP_CFG="/private/etc/apache2/other/load_php.conf"
+LOAD_REWRITE_CFG="/private/etc/apache2/other/load_rewrite.conf"
+LOAD_VHOST_ALIAS_CFG="/private/etc/apache2/other/load_vhost_alias.conf"
 
 DNS_BIN_PATH="$EASY_PHP_DEV_ROOT/bin/easy_php_dev_dns"
 
-DNS_PLIST_SRC="$EASY_PHP_DEV_ROOT/lib/ctcherry.easy_php_dev_dns.plist"
-DNS_PLIST_DEST="$USER_LAGENT_ROOT/ctcherry.easy_php_dev_dns.plist"
+DNS_PLIST_SRC="$EASY_PHP_DEV_ROOT/lib/kruegerdesigns.easy_php_dev_dns.plist"
+DNS_PLIST_DEST="$USER_LAGENT_ROOT/kruegerdesigns.easy_php_dev_dns.plist"
 
 SITE_ROOT="/Users/$USER/EasyPhpDev/sites"
 PHP_LIB="/Users/$USER/EasyPhpDev/phplib"
@@ -27,7 +27,7 @@ RESOLVER_ROOT="/etc/resolver"
 TMP_RESOLVER="/tmp/resolver_$RESOLVER_TLD"
 RESOLVER_DEST="$RESOLVER_ROOT/$RESOLVER_TLD"
 
-HOME_URL="https://github.com/ctcherry/easy_php_dev"
+HOME_URL="https://github.com/kruegerdesigns/easy_php_dev"
 
 enable () {
 
@@ -43,10 +43,10 @@ enable () {
   echo "- Setting up easy_php_dev_dns to start at boot"
   mkdir -p $USER_LAGENT_ROOT
   cp -f $DNS_PLIST_SRC $USER_LAGENT_ROOT/ > /dev/null 2>&1
-  
+
   sed -i '' "s,_BIN_PATH_,$DNS_BIN_PATH,g" $DNS_PLIST_DEST > /dev/null 2>&1
   sed -i '' "s,_PORT_,$PORT,g" $DNS_PLIST_DEST > /dev/null 2>&1
-  
+
   launchctl unload -w $DNS_PLIST_DEST > /dev/null 2>&1
   launchctl load -w $DNS_PLIST_DEST > /dev/null 2>&1
 
@@ -98,16 +98,16 @@ enable () {
   echo "- Setting up .loc resolver in $RESOLVER_DEST"
 
   sudo mkdir -p $RESOLVER_ROOT > /dev/null 2>&1
-  
+
   rm $TMP_RESOLVER > /dev/null 2>&1
-  
+
   echo "nameserver 127.0.0.1" | tee $TMP_RESOLVER > /dev/null 2>&1
   echo "port $PORT" | tee -a $TMP_RESOLVER > /dev/null 2>&1
   echo "order $RESOLVER_ORDER" | tee -a $TMP_RESOLVER > /dev/null 2>&1
   echo "timeout 1" | tee -a $TMP_RESOLVER > /dev/null 2>&1
-  
+
   sudo mv $TMP_RESOLVER $RESOLVER_DEST > /dev/null 2>&1
-  
+
   echo "- Creating test site $TEST_DOMAIN"
   mkdir $SITE_ROOT/$TEST_DOMAIN > /dev/null 2>&1
   echo "<?php phpinfo(); ?>" > $SITE_ROOT/$TEST_DOMAIN/index.php
@@ -117,25 +117,25 @@ disable() {
   echo "- Removing .$RESOLVER_TLD resolver $RESOLVER_DEST"
   echo "(If prompted, please enter your sudo password so we can uninstall)"
   sudo rm $RESOLVER_DEST > /dev/null 2>&1
-  
+
   echo "- Stopping easy_php_dns, and preventing from starting at boot"
   launchctl unload -w $DNS_PLIST_DEST > /dev/null 2>&1
-  
+
   echo "- Removing dynamic virtual host config $USER_AP_CFG"
   sudo rm $USER_AP_CFG > /dev/null 2>&1
-  
+
   echo "- Removing force virtual host config $USER_AP_FORCE_CFG"
   sudo rm $USER_AP_FORCE_CFG > /dev/null 2>&1
-  
+
   echo "- Disabing PHP"
   sudo rm $LOAD_PHP_CFG > /dev/null 2>&1
-  
+
   echo "- Disabing mod_rewrite"
   sudo rm $LOAD_REWRITE_CFG > /dev/null 2>&1
-  
+
   echo "- Disabing mod_vhost_alias"
   sudo rm $LOAD_VHOST_ALIAS_CFG > /dev/null 2>&1
-  
+
   echo "- Restarting Apache"
   sudo apachectl restart
 }
@@ -154,7 +154,7 @@ set_ip_vhost() {
   domain=${domain/https\:\/\//}
   domain=${domain/http\:\/\//}
   domain=${domain//\//}
-  
+
   if [ -e $SITE_ROOT/$domain ]; then
     echo "(If prompted, please enter your sudo password so we can configure)"
     echo "VirtualDocumentRootIP $SITE_ROOT/$domain" | sudo tee $USER_AP_FORCE_CFG > /dev/null 2>&1
@@ -183,12 +183,12 @@ if [ "$1" == "force" ]; then
     echo "Usage: control.sh force [domain.loc|off]"
     exit 0
   fi
-  
+
   if [ "$2" == "off" ]; then
     unset_ip_vhost
     exit 0
   fi
-  
+
   set_ip_vhost $2
   exit 0
 fi
